@@ -1,13 +1,52 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    width: 100vw;
+    overflow: hidden;
+    height: fit-content;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+.box{
+    width: 90vw;
+    padding: 30px;
+    height: fit-content;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.bb{
+    margin-top: 30px;
+}
+.emojis{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 50px;
+}
+button{
+    cursor: pointer;
+}
+p{
+    opacity: 0.1;
+    font-size: 100px;
+    margin: 10px;
+}
+h1{
+   color: #fff;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+/* 
+font-family: 'Climate Crisis', cursive;
+font-family: 'Poppins', sans-serif; */

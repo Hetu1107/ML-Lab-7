@@ -1,9 +1,10 @@
 import "./input.scss";
 import * as tf from "@tensorflow/tfjs";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [review,setReview] = useState("");
   const submit = () => {};
   const load = async () => {
     let s = "";
@@ -11,7 +12,7 @@ function App() {
     const model = await tf.loadLayersModel("http://localhost:5000/");
     let d = await axios
       .post("http://localhost:5000/chodu", {
-        review: "very good product",
+        review: review,
       })
       .then((e) => {
         let d = e.data;
@@ -32,18 +33,34 @@ function App() {
     a.push(parseInt(s));
     console.log(a);
     const prediction = model.predict(tf.tensor2d([a])).arraySync()[0][0];
-    console.log(prediction);
+    // console.log(prediction);
+    let ele1 = document.getElementById("one");
+    let ele2 = document.getElementById("two");
+    if(prediction>0.5){
+      ele1.style.opacity = 1;
+      ele2.style.opacity = 0.1;
+    }else{
+      ele2.style.opacity = 1;
+      ele1.style.opacity = 0.1;
+    }
+    document.getElementById("load").style.opacity = 0;
   };
-  useEffect(() => {
-    load();
-  }, []);
+  // useEffect(() => {
+  //   load();
+  // }, []);
   return (
     <div className="App">
+      <h1 id="load">loading....</h1>
       <div className="box">
         <h1>Reviews Classification</h1>
         <div class="webflow-style-input bb">
-          <input class="" type="text" placeholder="Enter the review..."></input>
-          <button onClick={submit}>🔍</button>
+          <input class="" type="text" placeholder="Enter the review..." onChange={(e)=>{
+            setReview(e.target.value);
+          }}></input>
+          <button onClick={()=>{
+            document.getElementById("load").style.opacity = 1;
+            load();
+          }}>🔍</button>
         </div>
         <div className="emojis">
           <p id="one">😄</p>

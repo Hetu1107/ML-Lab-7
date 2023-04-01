@@ -18,7 +18,7 @@ app.get("/", async (req, res) => {
 app.post("/chodu", (req, res) => {
   var dataToSend;
   const string = req.body.review;
-  const python = spawn("python", ["script1.py",string]);
+  const python = spawn("python", [`${__dirname}/script1.py`,string]);
   python.stdout.on("data", function (data) {
     dataToSend = data;
   });

@@ -9,13 +9,14 @@ function App() {
   const load = async () => {
     let s = "";
     let a = [];
-    const model = await tf.loadLayersModel("http://localhost:5000/");
+    const model = await tf.loadLayersModel("https://review-predictor-backend.onrender.com/");
     let d = await axios
-      .post("http://localhost:5000/chodu", {
+      .post("https://review-predictor-backend.onrender.com/chodu", {
         review: review,
       })
       .then((e) => {
         let d = e.data;
+        console.log(d);
         return d;
       });
     for (let i = 0; i < d.length; i++) {
@@ -30,7 +31,7 @@ function App() {
         s += d[i];
       }
     }
-    a.push(parseInt(s));
+    // a.push(parseInt(s));
     console.log(a);
     const prediction = model.predict(tf.tensor2d([a])).arraySync()[0][0];
     // console.log(prediction);

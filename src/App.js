@@ -4,7 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [review,setReview] = useState("");
+  const [review, setReview] = useState("");
   const submit = () => {};
   const load = async () => {
     let s = "";
@@ -36,13 +36,14 @@ function App() {
     // console.log(prediction);
     let ele1 = document.getElementById("one");
     let ele2 = document.getElementById("two");
-    if(prediction>0.5){
+    if (prediction > 0.5) {
       ele1.style.opacity = 1;
       ele2.style.opacity = 0.1;
-    }else{
+    } else {
       ele2.style.opacity = 1;
       ele1.style.opacity = 0.1;
     }
+    document.getElementById("load").style.zIndex = -1000;
     document.getElementById("load").style.opacity = 0;
   };
   // useEffect(() => {
@@ -50,17 +51,40 @@ function App() {
   // }, []);
   return (
     <div className="App">
-      <h1 id="load">loading....</h1>
+      <div id="load">
+        <div class="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
+        <h1>Loading...</h1>
+      </div>
       <div className="box">
         <h1>Reviews Classification</h1>
         <div class="webflow-style-input bb">
-          <input class="" type="text" placeholder="Enter the review..." onChange={(e)=>{
-            setReview(e.target.value);
-          }}></input>
-          <button onClick={()=>{
-            document.getElementById("load").style.opacity = 1;
-            load();
-          }}>🔍</button>
+          <input
+            class=""
+            type="text"
+            placeholder="Enter the review..."
+            onChange={(e) => {
+              setReview(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                document.getElementById("load").style.zIndex = 1000;
+                document.getElementById("load").style.opacity = 1;
+                load();
+              }
+            }}
+          ></input>
+          <button
+            onClick={() => {
+              document.getElementById("load").style.zIndex = 1000;
+              document.getElementById("load").style.opacity = 1;
+              load();
+            }}
+          >
+            🔍
+          </button>
         </div>
         <div className="emojis">
           <p id="one">😄</p>

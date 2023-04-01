@@ -1,50 +1,97 @@
-@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
-*{
-    margin: 0;
-    padding: 0;
-    top: 0;
-    left: 0;
-    font-family: 'Poppins', sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  font-family: "Poppins", sans-serif;
 }
-body{
-    width: 100vw;
-    overflow: hidden;
-    height: fit-content;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
+body {
+  width: 100vw;
+  overflow: hidden;
+  height: fit-content;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
-.box{
-    width: 90vw;
-    padding: 30px;
-    height: fit-content;
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.box {
+  width: 90vw;
+  padding: 30px;
+  height: fit-content;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-.bb{
-    margin-top: 30px;
+.bb {
+  margin-top: 30px;
 }
-.emojis{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    margin-top: 50px;
+.emojis {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 50px;
 }
-button{
-    cursor: pointer;
+button {
+  cursor: pointer;
 }
-p{
-    opacity: 0.1;
-    font-size: 100px;
-    margin: 10px;
+p {
+  opacity: 0.1;
+  font-size: 100px;
+  margin: 10px;
 }
-h1{
-   color: #fff;
+h1 {
+  color: #fff;
+}
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
 }
 
 /* 

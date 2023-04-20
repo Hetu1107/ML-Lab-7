@@ -1,18 +1,25 @@
 import "./input.scss";
 import * as tf from "@tensorflow/tfjs";
-import axios from "axios";
+import * as FileSaver from "file-saver";
+import XLSX from "sheetjs-style";
+import axios, { formToJSON } from "axios";
 import { useEffect, useState } from "react";
 
 function App() {
   const [review, setReview] = useState("");
-  const submit = () => {};
-  const load = async () => {
+  const [inputFileData, setInputFileData] = useState([]);
+  const [selectedFile, setSelectedFile] = useState();
+  const fileType =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset-UTF-8";
+  const fileExtension = ".xlsx";
+
+  const prediction = async (input_data) => {
     let s = "";
     let a = [];
     const model = await tf.loadLayersModel("http://localhost:5000/");
     let d = await axios
       .post("http://localhost:5000/chodu", {
-        review: review,
+        review: input_data,
       })
       .then((e) => {
         let d = e.data;
@@ -31,12 +38,16 @@ function App() {
       }
     }
     a.push(parseInt(s));
-    console.log(a);
-    const prediction = model.predict(tf.tensor2d([a])).arraySync()[0][0];
+    const predicted_value = model.predict(tf.tensor2d([a])).arraySync()[0][0];
+    return predicted_value;
+  };
+
+  const load = async () => {
+    const predicted_value = await prediction(review);
     // console.log(prediction);
     let ele1 = document.getElementById("one");
     let ele2 = document.getElementById("two");
-    if (prediction > 0.5) {
+    if (predicted_value > 0.5) {
       ele1.style.opacity = 1;
       ele2.style.opacity = 0.1;
     } else {
@@ -45,6 +56,57 @@ function App() {
     }
     document.getElementById("load").style.zIndex = -1000;
     document.getElementById("load").style.opacity = 0;
+  };
+
+  const exportToExcel = (excelData) => {
+    console.log(excelData);
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, "output" + fileExtension);
+  };
+  const handleFileData = () => {
+    document.getElementById("load").style.zIndex = 1000;
+    document.getElementById("load").style.opacity = 1;
+    let reader = new FileReader();
+    reader.onload = async (e) => {
+      const file = e.target.result;
+      const lines = file.split(/\r\n|\n/);
+      let output_file_data = [];
+      let output_json_data = [];
+      new Promise((resolve, reject) => {
+        lines.forEach(async (e) => {
+          let predicted_value = await prediction(e);
+          if (predicted_value > 0.5) {
+            output_file_data.push("Good review");
+          } else {
+            output_file_data.push("Bad reviw");
+          }
+          if (output_file_data.length == lines.length) {
+            resolve("ended");
+          }
+        });
+      })
+        .then(() => {
+          console.log(output_file_data);
+          output_file_data.forEach((e, index) => {
+            let data = {
+              index: index + 1,
+              Review: lines[index],
+              Prediction: e,
+            };
+            output_json_data.push(data);
+          });
+        })
+        .then(() => {
+          exportToExcel(output_json_data);
+          document.getElementById("load").style.zIndex = -1000;
+          document.getElementById("load").style.opacity = 0;
+        });
+    };
+    reader.onerror = (e) => alert(e.target.error.name);
+    reader.readAsText(selectedFile);
   };
   // useEffect(() => {
   //   load();
@@ -89,6 +151,19 @@ function App() {
         <div className="emojis">
           <p id="one">😄</p>
           <p id="two">🥺</p>
+        </div>
+      </div>
+      <div className="file_input">
+        <h1>Input File - (Assignment 8)</h1>
+        <div>
+          <input
+            type="file"
+            onChange={(e) => {
+              const files = e.target.files[0];
+              setSelectedFile(files);
+            }}
+          />
+          <button onClick={handleFileData}>submit</button>
         </div>
       </div>
     </div>
